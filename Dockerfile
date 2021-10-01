@@ -1,25 +1,29 @@
-ARG IMAGE_FPM_BUILDER=alpine:3.12
-FROM ${IMAGE_FPM_BUILDER}
+FROM centos:7.7.1908
 
-ENV REFRESHED_AT 2021-09-30
-LABEL Name="docktermj/fpm" \
-      Maintainer="nemo@dockter.com" \
-      Version="1.0.0"
+ENV REFRESHED_AT 2021-10-01
 
-# Install FPM.
+# --- Install system packages -------------------------------------------------
 
-RUN apk add --no-cache \
-      gcc \
-      libc-dev \
-      libffi-dev \
-      make \
-      rpm \
-      ruby \
-      ruby-dev \
-      ruby-etc \
- && gem install \
-      --no-document \
-      --version 1.13.1 \
-      fpm
+RUN yum -y update
+
+# Install [base, ruby] dependencies.
+
+RUN yum -y install \
+    git \
+    tar \
+    wget \
+ && yum -y install \
+    gcc \
+    make \
+    rpm-build \
+    ruby-devel \
+    rubygems \
+    which
+
+# Install Effing Package Manager (FPM).
+
+RUN gem install --no-ri --no-rdoc fpm
+
+# Runtime execution.
 
 ENTRYPOINT ["fpm"]
