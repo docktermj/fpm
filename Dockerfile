@@ -1,50 +1,21 @@
-ARG BASE_IMAGE=centos:7.9.2009
+ARG BASE_IMAGE=ruby:3.0.2-buster
 FROM ${BASE_IMAGE}
-ENV REFRESHED_AT 2021-10-01
+ENV REFRESHED_AT 2021-10-06
 LABEL Name="dockter/fpm" \
       Maintainer="nemo@dockter.com" \
       Version="1.0.0"
 
-# Avoid "Error: libselinux conflicts with fakesystemd-1-17.el7.centos.noarch"
+# Install packages via apt.
 
-#RUN yum -y swap fakesystemd systemd \
-# && yum -y install systemd-devel \
-# && yum clean all
+RUN apt-get -y update \
+ && apt-get -y install \
+      yum \
+ && rm -rf /var/lib/apt/lists/*
 
-# --- Install system packages -------------------------------------------------
+# Install packages via gem. https://rubygems.org/gems/
 
-RUN yum -y update
-
-# Install [base, ruby] dependencies.
-
-RUN yum -y install centos-release-scl
-
-RUN yum -y install rh-ruby23
-RUN yum -y install rh-ruby23-ruby-devel
-RUN yum -y install gcc
-RUN yum -y install make
-RUN yum -y install rpm-build
-RUN yum -y install rubygems
-
-
-RUN scl enable rh-ruby23 bash
-
-#RUN yum -y install tar
-#RUN yum -y install wget
-#RUN yum -y install gcc
-#RUN yum -y install make
-#RUN yum -y install rpm-build
-#RUN yum -y install ruby-devel
-#RUN yum -y install rubygems
-#RUN yum -y install which
-
-
-
-RUN gem install ffi --version "1.12.2"
-
-# Install Effing Package Manager (FPM).
-
-RUN gem install --no-ri --no-rdoc fpm
+RUN gem install --no-document \
+      fpm --version 1.13.1
 
 # Runtime execution.
 
