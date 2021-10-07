@@ -5,8 +5,7 @@ GIT_VERSION := $(shell git describe --always --tags --long --dirty | sed -e 's/\
 
 # Docker variables
 
-DOCKER_IMAGE_TAG ?= $(GIT_REPOSITORY_NAME):$(GIT_VERSION)
-DOCKER_IMAGE_NAME := docktermj/fpm
+DOCKER_IMAGE_NAME := dockter/fpm
 
 # -----------------------------------------------------------------------------
 # The first "make" target runs as default.
@@ -25,7 +24,7 @@ docker-build:
 		--tag $(DOCKER_IMAGE_NAME) \
 		--tag $(DOCKER_IMAGE_NAME):$(GIT_VERSION) \
 		.
-
+					
 # -----------------------------------------------------------------------------
 # Clean up targets
 # -----------------------------------------------------------------------------
