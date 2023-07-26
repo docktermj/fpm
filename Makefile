@@ -24,7 +24,7 @@ docker-build:
 		--tag $(DOCKER_IMAGE_NAME) \
 		--tag $(DOCKER_IMAGE_NAME):$(GIT_VERSION) \
 		.
-					
+
 # -----------------------------------------------------------------------------
 # Clean up targets
 # -----------------------------------------------------------------------------
@@ -41,9 +41,9 @@ clean: docker-rmi-for-build
 .PHONY: print-make-variables
 print-make-variables:
 	@$(foreach V,$(sort $(.VARIABLES)), \
-	   $(if $(filter-out environment% default automatic, \
-	   $(origin $V)),$(warning $V=$($V) ($(value $V)))))
-	   
+		$(if $(filter-out environment% default automatic, \
+		$(origin $V)),$(warning $V=$($V) ($(value $V)))))
+
 # -----------------------------------------------------------------------------
 # Help
 # -----------------------------------------------------------------------------
